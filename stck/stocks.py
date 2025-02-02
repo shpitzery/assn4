@@ -18,7 +18,7 @@ from pymongo import MongoClient
 client = MongoClient("mongodb://mongo:27017/")
 db = client['myDB']
 
-collection_name = os.getenv('COLLECTION_NAME', 'collection1')
+collection_name = os.getenv('COLLECTION_NAME', 'collection')
 collection = db[collection_name]
 
 # The Flask object represents the web application. 
@@ -157,48 +157,6 @@ def add_stock():
     except Exception as e:
         return jsonify({'server error':str(e)}), 500 # 500 = Internal Server Error
     
-
-# def add_stocks(stocks):
-#     try:
-#         responses = []
-#         seen_symbols = set()
-
-#         for stock in stocks:
-#             # Check for duplicate within the post request
-#             if stock.get('symbol') in seen_symbols:
-#                 responses.append({'error': f"Duplicate stock entry. There are two or more stocks in the rquest list with the same symbol"})
-#                 continue
-#             seen_symbols.add(stock.get('symbol'))
-            
-#             # Validate the stock data
-#             is_valid, err = validation(stock, 'post')
-#             if not is_valid:
-#                 responses.append({'error': err})
-#                 continue
-
-#             # Prevent Duplicates
-#             if any(stck['symbol'] == stock.get('symbol') for stck in portfolio):
-#                 responses.append({'error': f"Duplicate stock entry. Stock symbol {stock.get('symbol')} already exists"}), 400
-#                 continue
-
-#             # Generate a unique ID for the new stock
-#             stock_id = str(uuid.uuid4())
-#             formatted_stock = {
-#                 'id': stock_id,
-#                 'symbol': stock['symbol'],
-#                 'purchase price': round(float(stock['purchase price']), 2),
-#                 'shares': stock['shares'],
-#                 'purchase date': stock.get('purchase date', 'NA'),
-#                 'name': stock.get('name', 'NA'),
-#             }
-
-#             portfolio.append(formatted_stock)
-#             responses.append({'id': stock_id})
-
-#         return jsonify(responses), 207 # 207 = Multi-Status
-    
-#     except Exception as e:
-#         return jsonify({'server error':str(e)}), 500
 
 @app.route('/stocks', methods=['GET'])
 def get_stocks():
@@ -362,23 +320,6 @@ def get_portfolio_value():
 def kill_container():
     print('Killing container')
     os._exit(1)
-
-# routes for the nginx server
-@app.route('/stocks1', methods=['GET'])
-def get_stocks1():
-    return get_stocks()
-
-@app.route('/stocks1/<id>', methods=['GET'])
-def get_stock1(id):
-    return get_stock(id)
-
-@app.route('/stocks2', methods=['GET'])
-def get_stocks2():
-    return get_stocks()
-
-@app.route('/stocks2/<id>', methods=['GET'])
-def get_stock2(id):
-    return get_stock(id)
     
 
 if __name__ == '__main__':

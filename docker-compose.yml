@@ -1,4 +1,4 @@
-name: project2 # name of the project
+name: project4 # name of the project
 
 services:  
   mongo:
@@ -9,56 +9,22 @@ services:
       - mongo_data:/data/db # create a volume (a persistent data storage mechanism in Docker) for the database data.
     restart: always # restart the container if it stops
 
-  stocks1-a:
+  stocks:
     build: 
       context: ./ # build the image from the Dockerfile in the current directory
       dockerfile: dockerfile.stocks
-    container_name: stocks1-a
+    container_name: stocks
     ports:
       - "5001:8000" # map port 5001 on the host to port 8000 on the container
     environment:
-      - COLLECTION_NAME=collection1
+      - COLLECTION_NAME=collection
       - PORT=8000
-      - MY_NAME=stock1-a
+      - MY_NAME=stock
     restart: always # restart the container unless it is stopped by the user
     expose:
       - 8000 # Allow other containers services to directly reach this port.
     depends_on:
       - mongo # start the mongo service before the stock-service1 service
-
-  stocks1-b:
-    build:
-      context: ./
-      dockerfile: dockerfile.stocks
-    container_name: stocks1-b
-    ports:
-      - "5004:8000" 
-    environment:
-      - COLLECTION_NAME=collection1
-      - PORT=8000
-      - MY_NAME=stock1-b
-    restart: always
-    expose:
-      - 8000
-    depends_on:
-      - mongo
-
-  stocks2:
-    build: 
-      context: ./
-      dockerfile: dockerfile.stocks
-    container_name: stocks2
-    ports:
-      - "5002:8000"
-    environment:
-      - COLLECTION_NAME=collection2
-      - PORT=8000
-      - MY_NAME=stock2
-    restart: always
-    expose:
-      - 8000
-    depends_on:
-      - mongo # start the mongo service before the stock-service2 service
 
   capital-gains-service:
     build:
@@ -71,20 +37,7 @@ services:
       - PORT=8080
     restart: always
     depends_on:
-      - stocks1-a
-      - stocks2
-
-  reverse:
-    build:
-      context: ./
-      dockerfile: dockerfile.nginx
-    container_name: reverse
-    ports:
-      - "80:80"
-    depends_on:
-      - stocks1-a
-      - stocks1-b
-      - stocks2
+      - stocks
 
 volumes:
   mongo_data:
