@@ -264,7 +264,7 @@ def get_stock_value(id):
         data = response.json()
         price = data.get('price')
         shares = float(stock.get('shares'))
-        stock_value = float(shares * price)
+        stock_value = round(float(shares * price), 2)
 
         return jsonify({
             'symbol': symbol,
