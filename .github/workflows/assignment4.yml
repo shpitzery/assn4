@@ -122,6 +122,11 @@ jobs:
     #       exit 1
     #     fi
 
+    name: List all files after downloading artifacts
+      run: |
+        find . -name log.txt
+        find . -name log
+
     - name: Check containers
       run: |
         CONT_COUNT=$(docker ps -q | wc -l)
