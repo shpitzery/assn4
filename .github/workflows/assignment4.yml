@@ -112,9 +112,26 @@ jobs:
       run: docker-compose up -d
 
     # check the services are running
+    # - name: Check containers
+    #   run: |
+    #     CONT_COUNT=$(docker ps -q | wc -l)
+    #     if [ "$CONT_COUNT" -eq 3 ]; then
+    #       echo "Container up and running" >> log.txt
+    #     else
+    #       echo "Container failed to run" >> log.txt
+    #       exit 1
+    #     fi
+
     - name: Check containers
       run: |
         CONT_COUNT=$(docker ps -q | wc -l)
+        echo "Current container count: $CONT_COUNT"  # Debug print of container count
+        
+        # Debug check for log.txt existence and location
+        echo "Checking for log.txt:"
+        find . -name log.txt
+        ls -l log.txt || echo "log.txt not found"
+        
         if [ "$CONT_COUNT" -eq 3 ]; then
           echo "Container up and running" >> log.txt
         else
