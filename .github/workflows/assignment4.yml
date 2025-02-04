@@ -123,12 +123,10 @@ jobs:
     #     fi
 
     name: List all files after downloading artifacts
-      run: |
-        find . -name log.txt
+      run: find . -name log.txt
 
     name: List all files after downloading artifacts
-      run: |
-        find . -name log
+      run: find . -name log
 
     - name: Check containers
       run: |
