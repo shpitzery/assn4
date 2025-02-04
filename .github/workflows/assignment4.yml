@@ -128,14 +128,14 @@ jobs:
         echo "Current container count: $CONT_COUNT"  # Debug print of container count
         
         # Debug check for log.txt existence and location
-        echo "Checking for log.txt:"
+        echo "Checking for log.txt in workflow-artifacts:"
         find . -name log.txt
-        ls -l log.txt || echo "log.txt not found"
+        ls -l workflow-artifacts/log.txt || echo "log.txt not found in workflow-artifacts"
         
         if [ "$CONT_COUNT" -eq 3 ]; then
-          echo "Container up and running" >> log.txt
+          echo "Container up and running" >> workflow-artifacts/log.txt
         else
-          echo "Container failed to run" >> log.txt
+          echo "Container failed to run" >> workflow-artifacts/log.txt
           exit 1
         fi
 
