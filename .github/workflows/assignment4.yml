@@ -130,9 +130,9 @@ jobs:
         ls workflow-artifacts || echo "log.txt not found in workflow-artifacts"
         
         if [ "$CONT_COUNT" -eq 3 ]; then
-          echo "Container up and running" >> workflow-artifacts/log.txt
+          echo "Container up and running" >> log.txt
         else
-          echo "Container failed to run" >> workflow-artifacts/log.txt
+          echo "Container failed to run" >> log.txt
           exit 1
         fi
 
