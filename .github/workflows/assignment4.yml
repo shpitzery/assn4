@@ -38,6 +38,7 @@ jobs:
 
     - name: images status
       run: |
+        ls -l /tmp
         if [ -f /tmp/stocks-image.tar ] && [ -f /tmp/cg-image.tar ]; then
           echo "Image successfully built" >> log.txt
         else
