@@ -80,18 +80,13 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4 # download all artifacts that were uploaded
       with:
-        name: workflow-artifacts
         path: .
-
-    - name: Debug directory
-      run: |
-        pwd
 
     # load the images into the docker daemon
     - name: Load images
       run: |
-        docker load < /tmp/stocks-image.tar
-        docker load < /tmp/cg-image.tar
+        docker load < workflow-artifacts/tmp/stocks-image.tar
+        docker load < workflow-artifacts/tmp/cg-image.tar
 
     # check images are loaded
     - name: Check images
