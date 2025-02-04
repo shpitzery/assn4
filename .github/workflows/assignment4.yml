@@ -11,6 +11,7 @@ jobs:
     # init the log.txt file
     - name: Init log file
       run: |
+        : > log.txt
         START_TIME=$(date -Iminutes)
         echo "${START_TIME}" > log.txt
         echo "Yuval Shpitzer" >> log.txt
@@ -61,8 +62,6 @@ jobs:
     # download the artifacts from previous jobs
     - name: Download artifacts
       uses: actions/download-artifact@v4 # download all artifacts that were uploaded
-      with:
-        name: workflow-artifacts
 
     - name: List all files after downloading artifacts
       run: |
@@ -126,9 +125,9 @@ jobs:
         ls -l /workflow-artifacts/home/runner/work/assn4/assn4/log.txt || echo "log.txt not found in workflow-artifacts"
         
         if [ "$CONT_COUNT" -eq 3 ]; then
-          echo "Container up and running" >> /home/runner/work/assn4/assn4/log.txt
+          echo "Container up and running" >> log.txt
         else
-          echo "Container failed to run" >> /home/runner/work/assn4/assn4/log.txt
+          echo "Container failed to run" >> log.txt
           exit 1
         fi
 
