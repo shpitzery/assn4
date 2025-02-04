@@ -124,8 +124,7 @@ jobs:
 
     - name: List all files after downloading artifacts
       run: |
-        find . -name log.txt
-        find . -name log
+        find . -type f
 
     - name: Check containers
       run: |
