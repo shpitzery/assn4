@@ -134,8 +134,7 @@ jobs:
     # run the tests
     - name: Run tests
       run: |
-        cd tests
-        pytest -v assn4_tests.py > assn4_test_results.txt || true
+        pytest -v ./tests/assn4_tests.py > assn4_test_results.txt || true
 
     - name: tests results
       run: |
