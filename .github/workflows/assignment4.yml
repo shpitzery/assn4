@@ -108,8 +108,8 @@ jobs:
     # check the services are running
     - name: Check containers
       run: |
-        docker ps
-        if [ "$(docker ps -q | wc -l)" -eq 3 ]; then
+        CONT_COUNT=$(docker ps -q | wc -l)
+        if [ "$CONT_COUNT" -eq 3 ]; then
           echo "Container up and running" >> workflow-artifacts/log.txt
         else
           echo "Container failed to run" >> workflow-artifacts/log.txt
