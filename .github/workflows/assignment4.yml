@@ -18,24 +18,6 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    # # stocks image
-    # - name: Build and export stocks image
-    #   uses: docker/build-push-action@v6
-    #   with:
-    #     context: .
-    #     file: ./dockerfile.stocks
-    #     tags: stocks-srv:latest
-    #     output: type=docker,dest=/tmp/stocks-image.tar
-
-    # # capital-gains image
-    # - name: Build and export capital-gains image
-    #   uses: docker/build-push-action@v6
-    #   with:
-    #     context: .
-    #     file: ./dockerfile.capital
-    #     tags: cg-srv:latest
-    #     output: type=docker,dest=/tmp/cg-image.tar
-
     - name: Build and export stocks image
       run: |
         set -e
@@ -89,8 +71,8 @@ jobs:
     # load the images into the docker daemon
     - name: Load images
       run: |
-        docker load < workflow-artifacts/tmp/stocks-image.tar
-        docker load < workflow-artifacts/tmp/cg-image.tar
+        docker load < /tmp/stocks-image.tar
+        docker load < /tmp/cg-image.tar
 
     # check images are loaded
     - name: Check images
@@ -144,9 +126,9 @@ jobs:
         ls -l /workflow-artifacts/home/runner/work/assn4/assn4/log.txt || echo "log.txt not found in workflow-artifacts"
         
         if [ "$CONT_COUNT" -eq 3 ]; then
-          echo "Container up and running" >> /workflow-artifacts/home/runner/work/assn4/assn4/log.txt
+          echo "Container up and running" >> /home/runner/work/assn4/assn4/log.txt
         else
-          echo "Container failed to run" >> /workflow-artifacts/home/runner/work/assn4/assn4/log.txt
+          echo "Container failed to run" >> /home/runner/work/assn4/assn4/log.txt
           exit 1
         fi
 
