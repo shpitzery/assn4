@@ -78,8 +78,8 @@ jobs:
     # load the images into the docker daemon
     - name: Load images
       run: |
-        docker load < /tmp/stocks-image.tar
-        docker load < /tmp/cg-image.tar
+        docker load < images-artifacts/stocks-image.tar
+        docker load < images-artifactstmp/cg-image.tar
 
     # check images are loaded
     - name: Check images
@@ -111,12 +111,9 @@ jobs:
     #       exit 1
     #     fi
 
-    - name: List all files after downloading artifacts
-      run: |
-        find . -type f
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v4 # download all artifacts that were uploaded
+    
+    # - name: Download artifacts
+    #   uses: actions/download-artifact@v4 # download all artifacts that were uploaded
 
     - name: List all files after downloading artifacts
       run: |
@@ -130,12 +127,12 @@ jobs:
         # Debug check for log.txt existence and location
         echo "Checking for log.txt in workflow-artifacts:"
         find . -name log.txt
-        ls -l /workflow-artifacts/home/runner/work/assn4/assn4/log.txt || echo "log.txt not found in workflow-artifacts"
+        ls workflow-artifacts || echo "log.txt not found in workflow-artifacts"
         
         if [ "$CONT_COUNT" -eq 3 ]; then
-          echo "Container up and running" >> log.txt
+          echo "Container up and running" >> workflow-artifacts/log.txt
         else
-          echo "Container failed to run" >> log.txt
+          echo "Container failed to run" >> workflow-artifacts/log.txt
           exit 1
         fi
 
