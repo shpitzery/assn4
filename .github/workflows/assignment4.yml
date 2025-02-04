@@ -7,6 +7,14 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+
+    # init the log.txt file
+    - name: Init log file
+      run: |
+        START_TIME=$(date -Iminutes)
+        echo "${START_TIME}" > log.txt
+        echo "Yuval Shpitzer" >> log.txt
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
@@ -28,12 +36,23 @@ jobs:
         tags: cg-srv:latest
         output: type=docker,dest=/tmp/cg-image.tar
 
-    # upload the built images for use in the test job
-    - name: Upload images
+    - name: images status
+      run: |
+        if [ -f /tmp/stocks-image.tar ] && [ -f /tmp/cg-image.tar ]; then
+          echo "Image successfully built" >> log.txt
+        else
+          echo "Image failed to build" >> log.txt
+          exit 1
+        fi
+
+    # upload the built images and log.txt file for use in the next jobs
+    - name: Upload artifacts
+      if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: docker-images
-        path: | 
+        name: workflow-artifacts
+        path: |
+          log.txt
           /tmp/stocks-image.tar
           /tmp/cg-image.tar
       
@@ -42,8 +61,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    # download the images built in the build job
-    - name: Download images
+    # download the artifacts from previous jobs
+    - name: Download artifacts
       uses: actions/download-artifact@v4 # download all artifacts that were uploaded
 
     # load the images into the docker daemon
@@ -61,8 +80,14 @@ jobs:
       run: docker-compose up -d
 
     # check the services are running
-    - name: Check services
-      run: docker ps
+    - name: Check containers
+      run: |
+        if [ "$(docker ps -q | wc -l)" -eq 3 ]; then
+          echo "Container up and running" >> log.txt
+        else
+          echo "Container failed to run" >> log.txt
+          exit 1
+        fi
 
     - name: Checkout
       uses: actions/checkout@v4
@@ -83,8 +108,16 @@ jobs:
     - name: Run tests
       run: |
         cd tests
-        pytest -v assn4_test.py > assn4_test_results.txt
-      # continue-on-error: true # allow the next step to run even if tests fail
+        pytest -v assn4_test.py > assn4_test_results.txt || true
+
+    - name: tests results
+      run: |
+        if grep -q "FAILED" ./tests/assn4_test_results.txt; then
+          echo "tests failed" >> log.txt
+          exit 1
+        else
+          echo "tests succeeded" >> log.txt
+        fi
 
     # upload the test results
     - name: Upload test results
@@ -138,9 +171,11 @@ jobs:
 
     # run the querys file
     - name: Run querys
-      run: python querys.py
+      run: python query_services.py
 
-
-      
-
-          
+    # upload the query results (response.txt) as artifact
+    - name: Upload response file
+      uses: actions/upload-artifact@v4
+      with:
+        name: query response
+        path: response.txt    
