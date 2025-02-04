@@ -90,10 +90,10 @@ jobs:
     - name: Check images
       run: docker image ls
 
-    - name: install docker-compose
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker-compose
+    # - name: install docker-compose
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y docker-compose
 
     - name: Checkout
       uses: actions/checkout@v4
