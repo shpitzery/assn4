@@ -52,13 +52,11 @@ jobs:
           /tmp/stocks-image.tar
           /tmp/cg-image.tar
 
-    - name: Upload artifacts
+    - name: Upload log.txt
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: workflow-artifacts
-        path: |
-          log.txt
+        path: log.txt
       
   test:
     needs: build
