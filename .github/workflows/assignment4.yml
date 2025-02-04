@@ -126,6 +126,15 @@ jobs:
       run: |
         find . -type f
 
+    - name: Download artifacts
+      uses: actions/download-artifact@v4 # download all artifacts that were uploaded
+      with:
+        name: log.txt
+
+    - name: List all files after downloading artifacts
+      run: |
+        find . -type f
+        
     - name: Check containers
       run: |
         CONT_COUNT=$(docker ps -q | wc -l)
