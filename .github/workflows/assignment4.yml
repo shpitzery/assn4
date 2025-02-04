@@ -79,7 +79,7 @@ jobs:
     - name: Load images
       run: |
         docker load < images-artifacts/stocks-image.tar
-        docker load < images-artifactstmp/cg-image.tar
+        docker load < images-artifacts/cg-image.tar
 
     # check images are loaded
     - name: Check images
