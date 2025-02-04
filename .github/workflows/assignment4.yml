@@ -79,6 +79,14 @@ jobs:
     # download the artifacts from previous jobs
     - name: Download artifacts
       uses: actions/download-artifact@v4 # download all artifacts that were uploaded
+      with:
+        name: workflow-artifacts
+        path: .
+
+    - name: Debug directory
+      run: |
+        ls -R
+        pwd
 
     # load the images into the docker daemon
     - name: Load images
@@ -110,9 +118,9 @@ jobs:
       run: |
         CONT_COUNT=$(docker ps -q | wc -l)
         if [ "$CONT_COUNT" -eq 3 ]; then
-          echo "Container up and running" >> log.txt
+          echo "Container up and running" >> workflow-artifacts/log.txt
         else
-          echo "Container failed to run" >> log.txt
+          echo "Container failed to run" >> workflow-artifacts/log.txt
           exit 1
         fi
 
@@ -134,7 +142,8 @@ jobs:
     # run the tests
     - name: Run tests
       run: |
-        pytest -v ./tests/assn4_tests.py > assn4_test_results.txt || true
+        cd tests
+        pytest -v assn4_tests.py > assn4_test_results.txt || true
 
     - name: tests results
       run: |
