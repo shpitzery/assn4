@@ -18,23 +18,37 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    # stocks image
-    - name: Build and export stocks image
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        file: ./dockerfile.stocks
-        tags: stocks-srv:latest
-        output: type=docker,dest=/tmp/stocks-image.tar
+    # # stocks image
+    # - name: Build and export stocks image
+    #   uses: docker/build-push-action@v6
+    #   with:
+    #     context: .
+    #     file: ./dockerfile.stocks
+    #     tags: stocks-srv:latest
+    #     output: type=docker,dest=/tmp/stocks-image.tar
 
-    # capital-gains image
+    # # capital-gains image
+    # - name: Build and export capital-gains image
+    #   uses: docker/build-push-action@v6
+    #   with:
+    #     context: .
+    #     file: ./dockerfile.capital
+    #     tags: cg-srv:latest
+    #     output: type=docker,dest=/tmp/cg-image.tar
+
+    - name: Build and export stocks image
+      run: |
+        set -e
+        docker build -f ./dockerfile.stocks -t stocks-srv:latest .
+        docker images  # Check if the image exists
+        docker save stocks-srv:latest -o /tmp/stocks-image.tar || (echo "Failed to save stocks image" && exit 1)
+
     - name: Build and export capital-gains image
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        file: ./dockerfile.capital
-        tags: cg-srv:latest
-        output: type=docker,dest=/tmp/cg-image.tar
+      run: |
+        set -e
+        docker build -f ./dockerfile.capital -t cg-srv:latest .
+        docker images  # Check if the image exists
+        docker save cg-srv:latest -o /tmp/cg-image.tar || (echo "Failed to save capital-gains image" && exit 1)
 
     - name: images status
       run: |
