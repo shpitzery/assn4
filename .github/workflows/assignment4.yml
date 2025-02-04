@@ -155,7 +155,7 @@ jobs:
         path: tests/assn4_test_results.txt
 
   query:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     steps:
 
