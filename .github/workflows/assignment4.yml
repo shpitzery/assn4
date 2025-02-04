@@ -108,6 +108,7 @@ jobs:
     # check the services are running
     - name: Check containers
       run: |
+        docker ps
         if [ "$(docker ps -q | wc -l)" -eq 3 ]; then
           echo "Container up and running" >> log.txt
         else
