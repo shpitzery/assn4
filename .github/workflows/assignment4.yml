@@ -79,6 +79,8 @@ jobs:
     # download the artifacts from previous jobs
     - name: Download artifacts
       uses: actions/download-artifact@v4 # download all artifacts that were uploaded
+      with:
+        path: .
 
     # load the images into the docker daemon
     - name: Load images
@@ -162,6 +164,8 @@ jobs:
     # download the images built in the build job
     - name: Download images
       uses: actions/download-artifact@v4 # download all artifacts that were uploaded
+      with:
+        path: .
 
     # load the images into the docker daemon
     - name: Load images
