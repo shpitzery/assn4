@@ -13,7 +13,7 @@ stocks_config = {
         "symbol": "AAPL",
         "purchase price": 183.63,
         "purchase date": "22-02-2024",
-        "shares": 19
+        "shares": 19 
     },
     "stock3": {
         "name": "Alphabet Inc.",

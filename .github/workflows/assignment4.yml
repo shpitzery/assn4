@@ -116,9 +116,9 @@ jobs:
       run: |
         CONT_COUNT=$(docker ps -q | wc -l)
         if [ "$CONT_COUNT" -eq 3 ]; then
-          echo "Container up and running" >> ./workflow-artifacts/home/runner/work/assn4/assn4/log.txt
+          echo "Container up and running" >> log.txt
         else
-          echo "Container failed to run" >> ./workflow-artifacts/home/runner/work/assn4/assn4/log.txt
+          echo "Container failed to run" >> log.txt
           exit 1
         fi
 
