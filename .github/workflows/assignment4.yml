@@ -130,8 +130,6 @@ jobs:
         echo "Checking for log.txt in workflow-artifacts:"
         find . -name log.txt
         ls -l workflow-artifacts || echo "log.txt not found in workflow-artifacts"
-        echo "2" >> workflow-artifacts/log.txt
-        cat workflow-artifacts/log.txt
         
         if [ "$CONT_COUNT" -eq 3 ]; then
           echo "Container up and running" >> workflow-artifacts/log.txt
@@ -141,9 +139,6 @@ jobs:
         fi
 
         cat workflow-artifacts/log.txt
-
-    - name: Checkout
-      uses: actions/checkout@v4
       
     # set up a python environment
     - name: Set up python
@@ -180,13 +175,13 @@ jobs:
         name: test-results
         path: tests/assn4_test_results.txt
 
-    - name: Upload artifacts
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: workflow-artifacts
-        path: |
-          log.txt
+    # - name: Upload artifacts
+    #   if: always()
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: workflow-artifacts
+    #     path: |
+    #       log.txt
 
   query:
     needs: test
