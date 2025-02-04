@@ -11,7 +11,6 @@ jobs:
     # init the log.txt file
     - name: Init log file
       run: |
-        : > log.txt
         START_TIME=$(date -Iminutes)
         echo "${START_TIME}" > log.txt
         echo "Yuval Shpitzer" >> log.txt
@@ -44,6 +43,15 @@ jobs:
         fi
 
     # upload the built images and log.txt file for use in the next jobs
+    - name: Upload images
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: workflow-artifacts
+        path: |
+          /tmp/stocks-image.tar
+          /tmp/cg-image.tar
+
     - name: Upload artifacts
       if: always()
       uses: actions/upload-artifact@v4
@@ -51,8 +59,6 @@ jobs:
         name: workflow-artifacts
         path: |
           log.txt
-          /tmp/stocks-image.tar
-          /tmp/cg-image.tar
       
   test:
     needs: build
@@ -62,6 +68,8 @@ jobs:
     # download the artifacts from previous jobs
     - name: Download artifacts
       uses: actions/download-artifact@v4 # download all artifacts that were uploaded
+      with:
+        path: .
 
     - name: List all files after downloading artifacts
       run: |
