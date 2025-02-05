@@ -129,8 +129,8 @@ jobs:
         # Debug check for log.txt existence and location
         echo "Checking for log.txt in workflow-artifacts:"
         find . -name log.txt
-        ls -l workflow-artifacts || echo "log.txt not found in workflow-artifacts"
-        cat workflow-artifacts/log.txt
+        ls -l workflow-artifacts-build || echo "log.txt not found in workflow-artifacts"
+        cat workflow-artifacts-build/log.txt
         
         if [ "$CONT_COUNT" -eq 3 ]; then
           echo "Container up and running" >> workflow-artifacts-build/log.txt
