@@ -109,7 +109,7 @@ def main():
 
                 # make the request and write the response to response.txt
                 json_response = make_request(service, query_str)
-                res_file.write(f"{json.dumps(json_response)}\n")
+                res_file.write(f"{json.dumps(json_response, indent=2)}\n")
 
 if __name__ == "__main__":
     main()
