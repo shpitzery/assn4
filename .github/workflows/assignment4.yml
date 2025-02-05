@@ -139,7 +139,7 @@ jobs:
           exit 1
         fi
 
-        cat workflow-artifacts/log.txt
+        cat workflow-artifacts-build/log.txt
 
     - name: Checkout
       uses: actions/checkout@v4
