@@ -3,4 +3,4 @@ stocks:shares=7
 stocks:name=Apple Inc.
 stocks:
 capital-gains:numshareslt=19&numsharesgt=10
-stock:symbol=GOOG
+stocks:symbol=GOOG
