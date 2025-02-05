@@ -165,7 +165,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: log.txt
-        path: workflow-artifacts/log.txt
+        path: log-file-after-build-job/log.txt
 
     # upload the test results
     - name: Upload test results
