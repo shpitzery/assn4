@@ -133,9 +133,9 @@ jobs:
         cat workflow-artifacts/log.txt
         
         if [ "$CONT_COUNT" -eq 3 ]; then
-          echo "Container up and running" >> workflow-artifacts/log.txt
+          echo "Container up and running" >> workflow-artifacts-build/log.txt
         else
-          echo "Container failed to run" >> workflow-artifacts/log.txt
+          echo "Container failed to run" >> workflow-artifacts-build/log.txt
           exit 1
         fi
 
