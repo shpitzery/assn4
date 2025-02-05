@@ -173,6 +173,12 @@ jobs:
 
         cat workflow-artifacts/log.txt
 
+    - name: Upload artifacts-test
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: workflow-artifacts-test
+        path: workflow-artifacts/log.txt
 
     # upload the test results
     - name: Upload test results
@@ -182,12 +188,6 @@ jobs:
         name: test-results
         path: tests/assn4_test_results.txt
 
-    # - name: Upload artifacts-test
-    #   if: always()
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: workflow-artifacts
-    #     path: workflow-artifacts/log.txt
 
   query:
     needs: test
