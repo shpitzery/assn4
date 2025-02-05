@@ -86,6 +86,9 @@ def make_request(service: str, query: str):
         return f"Error making request: {str(e)}"
 
 def main():
+
+    first_posts()
+    
     # read the query.txt file
     with open('query.txt', "r") as que_file:
 
