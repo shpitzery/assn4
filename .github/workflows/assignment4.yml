@@ -52,13 +52,12 @@ jobs:
           /tmp/stocks-image.tar
           /tmp/cg-image.tar
 
-    - name: Upload artifacts
+    - name: Upload artifacts-build
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: workflow-artifacts-build
-        path: |
-          log.txt
+        name: workflow-artifacts
+        path: log.txt
       
   test:
     needs: build
@@ -129,17 +128,17 @@ jobs:
         # Debug check for log.txt existence and location
         echo "Checking for log.txt in workflow-artifacts:"
         find . -name log.txt
-        ls -l workflow-artifacts-build || echo "log.txt not found in workflow-artifacts"
-        cat workflow-artifacts-build/log.txt
+        ls -l workflow-artifacts || echo "log.txt not found in workflow-artifacts"
+        cat workflow-artifacts/log.txt
         
         if [ "$CONT_COUNT" -eq 3 ]; then
-          echo "Container up and running" >> workflow-artifacts-build/log.txt
+          echo "Container up and running" >> workflow-artifacts/log.txt
         else
-          echo "Container failed to run" >> workflow-artifacts-build/log.txt
+          echo "Container failed to run" >> workflow-artifacts/log.txt
           exit 1
         fi
 
-        cat workflow-artifacts-build/log.txt
+        cat workflow-artifacts/log.txt
 
     - name: Checkout
       uses: actions/checkout@v4
@@ -179,13 +178,12 @@ jobs:
         name: test-results
         path: tests/assn4_test_results.txt
 
-    - name: Upload artifacts
+    - name: Upload artifacts-test
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: workflow-artifacts-test
-        path: |
-          log.txt
+        name: workflow-artifacts
+        path: log.txt
 
   query:
     needs: test
