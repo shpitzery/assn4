@@ -37,9 +37,9 @@ jobs:
       run: |
         ls -l /tmp
         if [ -f /tmp/stocks-image.tar ] && [ -f /tmp/cg-image.tar ]; then
-          echo "Image successfully built" >> log.txt
+          echo "image successfully built" >> log.txt
         else
-          echo "Image failed to build" >> log.txt
+          echo "image failed to build" >> log.txt
           exit 1
         fi
 
@@ -53,7 +53,7 @@ jobs:
           /tmp/stocks-image.tar
           /tmp/cg-image.tar
 
-    - name: Upload artifacts-build
+    - name: Upload log.txt-after-build
       if: always()
       uses: actions/upload-artifact@v4
       with:
@@ -100,24 +100,13 @@ jobs:
     - name: Start services
       run: docker-compose up -d
 
-    # - name: Download artifacts
-    #   uses: actions/download-artifact@v4 # download all artifacts that were uploaded
-    #   with:
-    #     path: .
-
-    - name: List all files after downloading artifacts
-      run: |
-        find . -type f
+    # - name: List all files after downloading artifacts
+    #   run: |
+    #     find . -type f
         
     - name: Check containers
       run: |
         CONT_COUNT=$(docker ps -q | wc -l)
-        echo "Current container count: $CONT_COUNT"  # Debug print of container count
-        
-        echo "Checking for log.txt in log-file-after-build-job:"
-        find . -name log.txt
-        ls -l log-file-after-build-job || echo "log.txt not found in log-file-after-build-job"
-        cat log-file-after-build-job/log.txt
         
         if [ "$CONT_COUNT" -eq 3 ]; then
           echo "Container up and running" >> log-file-after-build-job/log.txt
@@ -125,11 +114,6 @@ jobs:
           echo "Container failed to run" >> log-file-after-build-job/log.txt
           exit 1
         fi
-
-        cat log-file-after-build-job/log.txt
-
-    # - name: Checkout
-    #   uses: actions/checkout@v4
       
     # set up a python environment
     - name: Set up python
@@ -158,9 +142,7 @@ jobs:
           echo "tests succeeded" >> log-file-after-build-job/log.txt
         fi
 
-        cat log-file-after-build-job/log.txt
-
-    - name: Upload artifacts-test
+    - name: Upload final-log.txt
       if: always()
       uses: actions/upload-artifact@v4
       with:
@@ -168,7 +150,7 @@ jobs:
         path: log-file-after-build-job/log.txt
 
     # upload the test results
-    - name: Upload test results
+    - name: Upload pytest results
       if: always()
       uses: actions/upload-artifact@v4
       with:
@@ -185,7 +167,7 @@ jobs:
     - name: Download images
       uses: actions/download-artifact@v4 # download all artifacts that were uploaded
       with:
-        path: .
+        name: stocks-and-cg-images
 
     # load the images into the docker daemon
     - name: Load images
@@ -233,5 +215,5 @@ jobs:
     - name: Upload response file
       uses: actions/upload-artifact@v4
       with:
-        name: query response
+        name: query response file
         path: response.txt    
