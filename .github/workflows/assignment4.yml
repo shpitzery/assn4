@@ -171,6 +171,9 @@ jobs:
           echo "tests succeeded" >> workflow-artifacts/log.txt
         fi
 
+        cat workflow-artifacts/log.txt
+
+
     # upload the test results
     - name: Upload test results
       if: always()
@@ -179,12 +182,12 @@ jobs:
         name: test-results
         path: tests/assn4_test_results.txt
 
-    - name: Upload artifacts-test
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: workflow-artifacts
-        path: workflow-artifacts/log.txt
+    # - name: Upload artifacts-test
+    #   if: always()
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: workflow-artifacts
+    #     path: workflow-artifacts/log.txt
 
   query:
     needs: test
