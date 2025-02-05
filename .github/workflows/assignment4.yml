@@ -48,7 +48,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: images-artifacts
+        name: stocks-and-cg-images
         path: |
           /tmp/stocks-image.tar
           /tmp/cg-image.tar
@@ -57,7 +57,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: workflow-artifacts
+        name: log-file-after-build-job
         path: log.txt
       
   test:
@@ -81,8 +81,8 @@ jobs:
     # load the images into the docker daemon
     - name: Load images
       run: |
-        docker load < images-artifacts/stocks-image.tar
-        docker load < images-artifacts/cg-image.tar
+        docker load < stocks-and-cg-images/stocks-image.tar
+        docker load < stocks-and-cg-images/cg-image.tar
 
     # check images are loaded
     - name: Check images
@@ -100,22 +100,10 @@ jobs:
     - name: Start services
       run: docker-compose up -d
 
-    # check the services are running
-    # - name: Check containers
-    #   run: |
-    #     CONT_COUNT=$(docker ps -q | wc -l)
-    #     if [ "$CONT_COUNT" -eq 3 ]; then
-    #       echo "Container up and running" >> log.txt
-    #     else
-    #       echo "Container failed to run" >> log.txt
-    #       exit 1
-    #     fi
-
-    
-    - name: Download artifacts
-      uses: actions/download-artifact@v4 # download all artifacts that were uploaded
-      with:
-        path: .
+    # - name: Download artifacts
+    #   uses: actions/download-artifact@v4 # download all artifacts that were uploaded
+    #   with:
+    #     path: .
 
     - name: List all files after downloading artifacts
       run: |
@@ -126,20 +114,19 @@ jobs:
         CONT_COUNT=$(docker ps -q | wc -l)
         echo "Current container count: $CONT_COUNT"  # Debug print of container count
         
-        # Debug check for log.txt existence and location
-        echo "Checking for log.txt in workflow-artifacts:"
+        echo "Checking for log.txt in log-file-after-build-job:"
         find . -name log.txt
-        ls -l workflow-artifacts || echo "log.txt not found in workflow-artifacts"
-        cat workflow-artifacts/log.txt
+        ls -l log-file-after-build-job || echo "log.txt not found in log-file-after-build-job"
+        cat log-file-after-build-job/log.txt
         
         if [ "$CONT_COUNT" -eq 3 ]; then
-          echo "Container up and running" >> workflow-artifacts/log.txt
+          echo "Container up and running" >> log-file-after-build-job/log.txt
         else
-          echo "Container failed to run" >> workflow-artifacts/log.txt
+          echo "Container failed to run" >> log-file-after-build-job/log.txt
           exit 1
         fi
 
-        cat workflow-artifacts/log.txt
+        cat log-file-after-build-job/log.txt
 
     # - name: Checkout
     #   uses: actions/checkout@v4
@@ -165,19 +152,19 @@ jobs:
     - name: tests results
       run: |
         if grep -q "FAILED" ./tests/assn4_test_results.txt; then
-          echo "tests failed" >> workflow-artifacts/log.txt
+          echo "tests failed" >> log-file-after-build-job/log.txt
           exit 1
         else
-          echo "tests succeeded" >> workflow-artifacts/log.txt
+          echo "tests succeeded" >> log-file-after-build-job/log.txt
         fi
 
-        cat workflow-artifacts/log.txt
+        cat log-file-after-build-job/log.txt
 
     - name: Upload artifacts-test
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: workflow-artifacts-test
+        name: log.txt
         path: workflow-artifacts/log.txt
 
     # upload the test results
@@ -185,7 +172,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: test-results
+        name: assn4_test_results.txt
         path: tests/assn4_test_results.txt
 
 
