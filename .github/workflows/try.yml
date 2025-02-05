@@ -9,6 +9,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+     - name: List all files after downloading artifacts
+      run: |
+        find . -name log.txt
+
     # init the log.txt file
     - name: Init log file
       run: |
@@ -41,8 +45,14 @@ jobs:
 
     - name: List all files after downloading artifacts
       run: |
-        find . -type f
+        find . -name log.txt
 
     - name: write to log
       run: |
         echo "write in second job" >> log.txt
+        cat log.txt
+
+    - name: Upload-log
+      if: always()
+      uses: actions/upload-artifact@v4
+      with: log.txt
