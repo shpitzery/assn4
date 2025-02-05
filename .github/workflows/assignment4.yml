@@ -56,7 +56,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: workflow-artifacts
+        name: workflow-artifacts-build
         path: |
           log.txt
       
@@ -64,6 +64,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
 
     # download the artifacts from previous jobs
     - name: Download artifacts
@@ -89,9 +92,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y docker-compose
-
-    - name: Checkout
-      uses: actions/checkout@v4
 
     - name: List files for debugging
       run: ls -la
@@ -130,7 +130,6 @@ jobs:
         echo "Checking for log.txt in workflow-artifacts:"
         find . -name log.txt
         ls -l workflow-artifacts || echo "log.txt not found in workflow-artifacts"
-        echo "2" >> workflow-artifacts/log.txt
         cat workflow-artifacts/log.txt
         
         if [ "$CONT_COUNT" -eq 3 ]; then
@@ -184,7 +183,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: workflow-artifacts
+        name: workflow-artifacts-test
         path: |
           log.txt
 
