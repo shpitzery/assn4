@@ -188,6 +188,9 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y docker-compose
 
+    - name: Checkout
+      uses: actions/checkout@v4
+
     # start the services
     - name: Start services
       run: docker-compose up -d
@@ -195,9 +198,6 @@ jobs:
     # check the services are running
     - name: Check services
       run: docker ps
-
-    - name: Checkout
-      uses: actions/checkout@v4
       
     # set up a python environment
     - name: Set up python
