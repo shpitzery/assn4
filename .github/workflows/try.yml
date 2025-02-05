@@ -44,14 +44,14 @@ jobs:
 
     - name: List all files after downloading artifacts
       run: |
-        find . -name workflow-artifacts/log.txt
+        find . -name log.txt
 
     - name: write to log
       run: |
         echo "write in second job" >> workflow-artifacts/log.txt
         cat workflow-artifacts/log.txt
 
-    - name: Upload-log
+    - name: Upload-log-2
       if: always()
       uses: actions/upload-artifact@v4
       with:
