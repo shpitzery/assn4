@@ -1,4 +1,5 @@
 import requests
+import json
 
 stocks_config = {
     "stock1": {
@@ -80,7 +81,7 @@ def make_request(service: str, query: str):
     try:
         response = requests.get(url)
 
-        return response.text
+        return response.json()
     
     except requests.exceptions.RequestException as e:
         return f"Error making request: {str(e)}"
@@ -88,7 +89,7 @@ def make_request(service: str, query: str):
 def main():
 
     first_posts()
-    
+
     # read the query.txt file
     with open('query.txt', "r") as que_file:
 
@@ -108,7 +109,7 @@ def main():
 
                 # make the request and write the response to response.txt
                 json_response = make_request(service, query_str)
-                res_file.write(f"{json_response}\n")
+                res_file.write(f"{json.dumps(json_response)}\n")
 
 if __name__ == "__main__":
     main()
