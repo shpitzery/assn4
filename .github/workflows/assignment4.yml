@@ -11,6 +11,7 @@ jobs:
     # init the log.txt file
     - name: Init log file
       run: |
+        : > log.txt
         START_TIME=$(date -Iminutes)
         echo "${START_TIME}" > log.txt
         echo "Yuval Shpitzer" >> log.txt
@@ -140,8 +141,8 @@ jobs:
 
         cat workflow-artifacts/log.txt
 
-    - name: Checkout
-      uses: actions/checkout@v4
+    # - name: Checkout
+    #   uses: actions/checkout@v4
       
     # set up a python environment
     - name: Set up python
@@ -164,10 +165,10 @@ jobs:
     - name: tests results
       run: |
         if grep -q "FAILED" ./tests/assn4_test_results.txt; then
-          echo "tests failed" >> log.txt
+          echo "tests failed" >> workflow-artifacts/log.txt
           exit 1
         else
-          echo "tests succeeded" >> log.txt
+          echo "tests succeeded" >> workflow-artifacts/log.txt
         fi
 
     # upload the test results
@@ -183,7 +184,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: workflow-artifacts
-        path: log.txt
+        path: workflow-artifacts/log.txt
 
   query:
     needs: test

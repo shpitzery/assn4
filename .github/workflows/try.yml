@@ -1,0 +1,48 @@
+name: workf
+on:
+  workflow_dispatch
+jobs:
+
+  first:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # init the log.txt file
+    - name: Init log file
+      run: |
+        : > log.txt
+        START_TIME=$(date -Iminutes)
+        echo "${START_TIME}" >> log.txt
+        echo "Yuval Shpitzer" >> log.txt
+
+    # - name: Upload artifacts-build
+    #   if: always()
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: workflow-artifacts
+    #     path: log.txt
+
+    
+second:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # # download the artifacts from previous jobs
+    # - name: Download artifacts
+    #   uses: actions/download-artifact@v4 # download all artifacts that were uploaded
+    #   with:
+    #     path: .
+
+    - name: List all files after downloading artifacts
+      run: |
+        find . -type f
+
+    - name: write to log
+      run: |
+        echo "write in second job" >> log.txt
