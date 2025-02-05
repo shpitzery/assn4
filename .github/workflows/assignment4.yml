@@ -169,6 +169,10 @@ jobs:
       with:
         name: stocks-and-cg-images
 
+    - name: List all files after downloading artifacts
+      run: |
+        find . -type f
+
     # load the images into the docker daemon
     - name: Load images
       run: |
