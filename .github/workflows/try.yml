@@ -9,7 +9,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-     - name: List all files after downloading artifacts
+    - name: List all files after downloading artifacts
       run: |
         find . -name log.txt
 
