@@ -172,8 +172,8 @@ jobs:
     # load the images into the docker daemon
     - name: Load images
       run: |
-        docker load < images-artifacts/stocks-image.tar
-        docker load < images-artifacts/cg-image.tar
+        docker load < stocks-and-cg-images/stocks-image.tar
+        docker load < stocks-and-cg-images/cg-image.tar
 
     # check images are loaded
     - name: Check images
