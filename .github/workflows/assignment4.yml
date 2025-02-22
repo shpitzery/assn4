@@ -221,10 +221,3 @@ jobs:
       with:
         name: response.txt
         path: response.txt
-
-    - name: Delete intermidiate artifact
-      uses: geekyeggo/delete-artifact@v2
-      with:
-        name: |
-          log-file-after-build-job
-          stocks-and-cg-images
