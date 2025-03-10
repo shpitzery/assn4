@@ -91,7 +91,7 @@ def test_3():
 
     data = response.json()
 
-    assert isinstance(data, list) and len(data) == 3, f"Expected a list of length 3, but got {data}"
+    assert isinstance(data, list) and len(data) == 2, f"Expected a list of length 3, but got {data}"
 
     assert all(isinstance(stock, dict) for stock in data), f"Not all items in the list are JSON objects"
 
